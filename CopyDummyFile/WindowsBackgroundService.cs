@@ -1,17 +1,35 @@
+using System.Globalization;
+
 namespace App.WindowsService;
 
 public sealed class WindowsBackgroundService(
-    JokeService jokeService,
+    FileService fileService,
+    SendService sendService,
     ILogger<WindowsBackgroundService> logger) : BackgroundService
 {
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
         {
+            //try to read config file
+            Configuration myConfig= fileService.getConfig();
+            string starttime = myConfig["DailyStart"];
+            DateTime configStart = DateTime.ParseExact(
+                starttime,
+                "HH:mm",
+                CultureInfo.CurrentCulture);
+            DateTime Start = configStart;
+             
             while (!stoppingToken.IsCancellationRequested)
             {
-                string joke = jokeService.GetJoke();
-                logger.LogWarning("{Joke}", joke);
+                if (Start < DateTime.Now)
+                    Start = Start.AddHours(24);
+                TimeSpan sp = TimeSpan.FromMinutes((Start - DateTime.Now).TotalMinutes);
+                await Task.Delay(sp, stoppingToken);
+
+                string filepath = fileService.GetFile();
+                sendService.sendFile(myConfig, filepath);
 
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
