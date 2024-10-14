@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Renci.SshNet;
 using System;
 using System.Collections.Generic;
@@ -19,9 +19,9 @@ namespace App.WindowsService
             string filename = testar[testar.Length - 1];
             try
             {
-                
                 using (var client = new SftpClient(MyConfig["sftpServer"], MyConfig["sftpUser"], MyConfig["sftpPass"]))
-                {
+                //using (var client = new SftpClient(localServer, localUser, localPass))
+               {
                     client.Connect();
 
                     using (FileStream fs = File.OpenRead(sendfile))
@@ -30,9 +30,10 @@ namespace App.WindowsService
                     }
 
                     client.Disconnect();
+                    client.Dispose();
                 }
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 System.Environment.Exit(1);

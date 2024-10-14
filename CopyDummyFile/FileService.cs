@@ -1,4 +1,5 @@
-﻿namespace App.WindowsService
+﻿using Microsoft.Data.SqlClient;
+namespace App.WindowsService
 {
 
     public class Configuration
@@ -100,16 +101,43 @@
             string fileName = "";
             try
             {
-                pathtoev = getsetConfigPath(pathtoev);
+                //connect to Kufer-Datebase
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                builder.DataSource = "DESKTOP-LSDFSMU\\SQLEXPRESS02";
+                builder.TrustServerCertificate = true;
+                builder.IntegratedSecurity = true;
+                builder.InitialCatalog = "Kufer4_demo";
 
+                //connect to output-file
+                pathtoev = getsetConfigPath(pathtoev);
                 fileName = pathtoev + @"\" + evovhs_id;
                 fileName += DateTime.Now.ToString("dd_MM_yyyy_HH_mm") + ".json";
-                using (StreamWriter wr = new StreamWriter(fileName))
+
+                using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                 {
-                    wr.WriteLine("Neuer Eintrag von " + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss"));
-                    wr.Flush();
-                    wr.Close();
+                    String sql = "SELECT KURZBEZ FROM dbo.KURSE";
+                    using (StreamWriter wr = new StreamWriter(fileName))
+                    {
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            connection.Open();
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    wr.WriteLine("{0} ", reader.GetString(0));
+                                }
+
+                            }
+                        }
+                        //wr.WriteLine("Neuer Eintrag von " + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss"));
+                        wr.Flush();
+                        wr.Close();
+                    }
+                    connection.Close();
+                    connection.Dispose();
                 }
+                
                 return (fileName);
             }
             catch
