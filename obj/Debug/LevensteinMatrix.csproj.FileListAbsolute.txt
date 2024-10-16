@@ -1,0 +1,10 @@
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\bin\Debug\LevensteinMatrix.exe.config
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\bin\Debug\LevensteinMatrix.exe
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\bin\Debug\LevensteinMatrix.pdb
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\obj\Debug\LevensteinMatrix.csproj.AssemblyReference.cache
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\obj\Debug\LevensteinMatrix.Properties.Resources.resources
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\obj\Debug\LevensteinMatrix.TestLevenstein.resources
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\obj\Debug\LevensteinMatrix.csproj.GenerateResource.cache
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\obj\Debug\LevensteinMatrix.csproj.CoreCompileInputs.cache
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\obj\Debug\LevensteinMatrix.exe
+B:\Ki_Test\LevensteinMatrix\LevensteinMatrix\obj\Debug\LevensteinMatrix.pdb
