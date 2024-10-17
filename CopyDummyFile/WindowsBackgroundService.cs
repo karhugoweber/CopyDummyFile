@@ -31,7 +31,7 @@ public sealed class WindowsBackgroundService(
                 string filepath = fileService.GetFile();
                 sendService.sendFile(myConfig, filepath);
 
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+           //     await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
         }
         catch (OperationCanceledException)
