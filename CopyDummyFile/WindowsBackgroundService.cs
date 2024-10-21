@@ -28,7 +28,7 @@ public sealed class WindowsBackgroundService(
                 TimeSpan sp = TimeSpan.FromMinutes((Start - DateTime.Now).TotalMinutes);
                 await Task.Delay(sp, stoppingToken);
 
-                string filepath = fileService.GetFile();
+                string filepath = fileService.GetFile(myConfig);
                 sendService.sendFile(myConfig, filepath);
 
            //     await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);

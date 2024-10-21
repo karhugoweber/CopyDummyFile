@@ -8,12 +8,15 @@ namespace App.WindowsService
         private List<Configu> configurations = new List<Configu>()
         {
             //initialize configuration with Default-Values
+           new Configu{Name="VHS_Id", Value="vhs_dummy"},
            new Configu{Name="DailyStart", Value = "10:00"},
            new Configu{Name="sftpServer", Value=""},
            new Configu{Name="sftpUser", Value=""},
            new Configu{Name="sftpPass", Value=""},
            new Configu{Name="sftpdestination", Value=@"/html/test"},
-           new Configu{Name="sftpsource", Value=@"C:\Evolution\Transfer"}
+           new Configu{Name="sftpsource", Value=@"C:\Evolution\Transfer"},
+           new Configu{Name="dbservername", Value="" },
+           new Configu{Name="dbname", Value="" }
         };
 
         public string this[string Name]
@@ -96,21 +99,21 @@ namespace App.WindowsService
             return config;
         }
         //Get a new transfer
-        public string GetFile(string evovhs_id = "evovhs_000")
+        public string GetFile(Configuration MyConfig, string evovhs_id = "evovhs_000")
         {
             string fileName = "";
             try
             {
                 //connect to Kufer-Datebase
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = "DESKTOP-LSDFSMU\\SQLEXPRESS02";
+                builder.DataSource = MyConfig["dbservername"];
                 builder.TrustServerCertificate = true;
                 builder.IntegratedSecurity = true;
-                builder.InitialCatalog = "Kufer4_demo";
+                builder.InitialCatalog = MyConfig["dbname"]; ;
 
                 //connect to output-file
                 pathtoev = getsetConfigPath(pathtoev);
-                fileName = pathtoev + @"\" + evovhs_id;
+                fileName = pathtoev + @"\" + MyConfig["VHS_Id"] + "_";
                 fileName += DateTime.Now.ToString("dd_MM_yyyy_HH_mm") + ".json";
 
                 using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
